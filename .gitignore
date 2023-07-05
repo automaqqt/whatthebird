@@ -1,0 +1,5 @@
+frontend/node_modules/*
+frontend/.next/*
+backend/data/*
+backend/instance/*
+frontend/package-lock.json

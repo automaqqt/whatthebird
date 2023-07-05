@@ -14,6 +14,8 @@ const BirdDetectionPage = () => {
   const canvasRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [waiting, setWaiting] = useState(false);
+  const [location, setLocation] = useState({long:'',lat:''});
+  
 
   const handleClose = () => {
     setOpen(false);
@@ -32,7 +34,9 @@ const BirdDetectionPage = () => {
 
     const formData = new FormData();
     formData.append("image", imageData);
-    axios.post('https://api.birds.einfachschach.de/v1/birds', formData, {
+    formData.append("source", 'webpage');
+    formData.append("location", location.lat + ',' + location.long);
+    axios.post('https://api.birds.einfachschach.de/v1/predict/birds', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -99,7 +103,16 @@ const BirdDetectionPage = () => {
           console.error('Error accessing camera:', error);
         });
     }
-  }, [waiting]);
+  }, [waiting, cam]);
+
+  useEffect(() => {
+    if('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(({ coords }) => {
+            const { latitude, longitude } = coords;
+            setLocation({lat: latitude, long: longitude });
+        })
+    }
+  }, []); 
 
   const dialogStyle = {
     maxWidth: '400px',

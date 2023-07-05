@@ -1,7 +1,5 @@
 torch
 torchvision
-flask
-flask-cors
 Pillow
 ultralytics
-flask-sqlalchemy
+geocoder
